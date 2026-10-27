@@ -3,7 +3,7 @@ import { Preloader } from './scenes/Preloader';
 import { MainMenu } from './scenes/MainMenu';
 import { Game as MainGame } from './scenes/Game';
 import { GameOver } from './scenes/GameOver';
-import { Victory } from './scenes/Victory';
+import Lobby from './scenes/Lobby';
 import  TestScene  from './scenes/TestScene'
 import { AUTO, Game, Scale } from 'phaser';
 
@@ -31,7 +31,6 @@ const config: Phaser.Types.Core.GameConfig = {
         Lobby,
         MainMenu,
         MainGame,
-        Victory,
         GameOver
     ]
 };
