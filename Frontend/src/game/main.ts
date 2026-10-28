@@ -25,13 +25,14 @@ const config: Phaser.Types.Core.GameConfig = {
         autoCenter: Scale.CENTER_BOTH
     },
     scene: [
-	TestScene,
         Boot,
         Preloader,
         Lobby,
         MainMenu,
         MainGame,
-        GameOver
+        GameOver,
+        // Added: the lobby enters this room-backed scene after the login/host/join step.
+        TestScene
     ]
 };
 
