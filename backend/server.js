@@ -13,11 +13,14 @@ const roomState = {}; // NEW: Tracks X, Y coordinates for players in a room
 
 io.on('connection', (socket) => {
     
-    socket.on('createRoom', () => {
+    socket.on('createRoom', (data = {}) => {
+        // Added: keep the lobby's chosen login name for the shared player label.
+        const { playerName, roomConfig } = data; // Destructure the incoming data
         const roomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
+        socket.data.playerName = typeof data?.playerName === 'string' ? data.playerName.trim().slice(0, 16) : '';
         socket.join(roomCode);
         activeRooms.set(roomCode, [socket.id]);
-        roomState[roomCode] = { players: {} }; // Initialize game state
+        roomState[roomCode] = { players: {},config: roomConfig }; // Initialize game state
         socket.emit('roomCreated', roomCode);
     });
 
@@ -47,7 +50,7 @@ io.on('connection', (socket) => {
         roomState[roomCode].players[socket.id] = playerInfo;
 
         // Send all current players to the new guy
-        socket.emit('currentPlayers', roomState[roomCode].players);
+        socket.emit('currentPlayers', {players: roomState[roomCode].players, config: roomState[roomCode].config});
         // Tell everyone else the new guy spawned
         socket.to(roomCode).emit('newPlayerSpawned', { id: socket.id, playerInfo });
     });

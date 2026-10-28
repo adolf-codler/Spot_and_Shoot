@@ -20,7 +20,16 @@ export default class Lobby extends Scene {
             .setInteractive({ useHandCursor: true })
             .on('pointerdown', () => {
                 hostBtn.setColor('#aaaaaa'); // Visual feedback
-                socket.emit('createRoom');
+                // Added: the login name travels with the room request and is shown to the opponent.
+                const roomConfig = {
+                    torch_area: this.registry.get('torch_area') || 100,
+                    bullet_speed: this.registry.get('bullet_speed') || 500,
+                    player_speed: this.registry.get('player_speed') || 200,
+                    max_players: this.registry.get('max_players') || 8
+                };
+
+                // Send both the name and the configuration to the server
+                socket.emit('createRoom', { playerName, roomConfig });
             });
 
         // JOIN BUTTON
@@ -51,6 +60,18 @@ export default class Lobby extends Scene {
         socket.on('error', (errorMessage: string) => {
             alert(errorMessage); 
             hostBtn.setColor('#00ff00'); // Reset button color on failure
+        });
+//room settings
+        const roomSettingsBtn = this.add.text(950, 50, '⚙ (Room)', {
+            fontSize: '32px',
+            color: '#aaaaaa'
+        })
+        .setOrigin(0.5)
+        .setInteractive({ useHandCursor: true })
+        .on('pointerover', () => roomSettingsBtn.setColor('#ffffff'))
+        .on('pointerout', () => roomSettingsBtn.setColor('#aaaaaa'))
+        .on('pointerdown', () => {
+        this.scene.start('RoomSettings');
         });
     }
 

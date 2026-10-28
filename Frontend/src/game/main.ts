@@ -5,6 +5,10 @@ import { MainMenu } from './scenes/MainMenu';
 import { AUTO, Game } from 'phaser';
 import { Preloader } from './scenes/Preloader';
 import Lobby from './scenes/Lobby';
+import  TestScene  from './scenes/TestScene'
+import { AUTO, Game, Scale } from 'phaser';
+import Settings from './scenes/Settings';
+import RoomSettings from './scenes/RoomSettings';
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -17,10 +21,14 @@ const config: Phaser.Types.Core.GameConfig = {
     scene: [
         Boot,
         Preloader,
-        Lobby,
         MainMenu,
-        MainGame,
-        GameOver
+        Settings,
+        Lobby,
+        RoomSettings,
+        // MainGame,
+        // GameOver,
+        // Added: the lobby enters this room-backed scene after the login/host/join step.
+        TestScene
     ]
 };
 
